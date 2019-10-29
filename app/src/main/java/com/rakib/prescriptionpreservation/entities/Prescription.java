@@ -1,6 +1,7 @@
 package com.rakib.prescriptionpreservation.entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -10,26 +11,36 @@ public class Prescription implements Serializable {
     private long id;
     private String image;
     private String doctorName;
+    private String docNumber;
+    private String docAddress;
     private String hospitalName;
     private String date;
 
-    public Prescription(String image, String doctorName, String hospitalName, String date) {
+    public Prescription(String image, String doctorName, String docNumber, String docAddress, String hospitalName, String date) {
         this.image = image;
         this.doctorName = doctorName;
+        this.docNumber = docNumber;
+        this.docAddress = docAddress;
         this.hospitalName = hospitalName;
         this.date = date;
     }
 
-    public Prescription(String doctorName, String hospitalName, String date) {
+    @Ignore
+    public Prescription(String doctorName, String docNumber, String docAddress, String hospitalName, String date) {
         this.doctorName = doctorName;
+        this.docNumber = docNumber;
+        this.docAddress = docAddress;
         this.hospitalName = hospitalName;
         this.date = date;
     }
 
-    public Prescription(long id, String image, String doctorName, String hospitalName, String date) {
+    @Ignore
+    public Prescription(long id, String image, String doctorName, String docNumber, String docAddress, String hospitalName, String date) {
         this.id = id;
         this.image = image;
         this.doctorName = doctorName;
+        this.docNumber = docNumber;
+        this.docAddress = docAddress;
         this.hospitalName = hospitalName;
         this.date = date;
     }
@@ -56,6 +67,22 @@ public class Prescription implements Serializable {
 
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
+    }
+
+    public String getDocNumber() {
+        return docNumber;
+    }
+
+    public void setDocNumber(String docNumber) {
+        this.docNumber = docNumber;
+    }
+
+    public String getDocAddress() {
+        return docAddress;
+    }
+
+    public void setDocAddress(String docAddress) {
+        this.docAddress = docAddress;
     }
 
     public String getHospitalName() {
