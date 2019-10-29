@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,8 +16,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rakib.prescriptionpreservation.db.PrescriptionDB;
@@ -25,21 +28,29 @@ import com.rakib.prescriptionpreservation.entities.Prescription;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
-public class AddPrescriptionActivity extends AppCompatActivity {
-    private EditText docName,docNumber,docAddress,hosName,date;
+public class AddPrescriptionActivity extends AppCompatActivity implements View.OnClickListener {
+    private EditText docName,docNumber,docAddress,hosName;
+    private TextView date;
     private ImageView profilePic;
     private String currentPhotoPath;
     private final int REQUEST_CALL_PHONE_CODE = 123;
     private final int REQUEST_STORAGE_CODE = 456;
     private final int REQUEST_CAMERA_CODE = 999;
 
+    //date picker
+    private DatePickerDialog datePickerDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_prescription);
+        getSupportActionBar().hide();
         initialization();
+
+        date.setOnClickListener(this);
 
 
     }
@@ -56,7 +67,7 @@ public class AddPrescriptionActivity extends AppCompatActivity {
             String doc = docName.getText().toString();
             String dnum = docNumber.getText().toString();
             String dadd = docAddress.getText().toString();
-            String dat = getCurrentDate();
+            String dat = date.getText().toString();
 
             Prescription prescription = new Prescription(path,doc,dnum,dadd,dat);
 
@@ -64,7 +75,7 @@ public class AddPrescriptionActivity extends AppCompatActivity {
 
             if (insertedRow>0){
                 Toast.makeText(this, "Prescription saved", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this,DashboardActivity.class));
                 finish();
             }
         }
@@ -178,8 +189,28 @@ public class AddPrescriptionActivity extends AppCompatActivity {
         return true;
     }
 
-    private String getCurrentDate(){
-        return new SimpleDateFormat("dd/MM/yyyy")
-                .format(new Date());
+
+
+    @Override
+    public void onClick(View v) {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        datePickerDialog = new DatePickerDialog(this,android.R.style.Theme_Holo_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month+1;
+                String dat = dayOfMonth + "/" + month + "/" + year;
+                date.setText(dat);
+
+            }
+        },year,month,day);
+        datePickerDialog.show();
     }
+
+//    private String getCurrentDate(){
+//        return new SimpleDateFormat("dd/MM/yyyy")
+//                .format(new Date());
+//    }
 }
