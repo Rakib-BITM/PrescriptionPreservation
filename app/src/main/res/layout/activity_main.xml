@@ -11,16 +11,17 @@
 
     <ImageView
         android:id="@+id/welcomeLogo"
-        android:layout_width="237dp"
-        android:layout_height="241dp"
+        android:layout_width="211dp"
+        android:layout_height="204dp"
+        android:layout_marginBottom="15dp"
         android:src="@drawable/icon_logo"
-        android:layout_marginBottom="15dp"/>
+        android:contentDescription="Welcome"/>
 
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prescription Preservation System"
+        android:text="@string/prescription_preservation_system"
         android:fontFamily="@font/spotlight"
         android:textAlignment="center"
         android:textColor="#000"
