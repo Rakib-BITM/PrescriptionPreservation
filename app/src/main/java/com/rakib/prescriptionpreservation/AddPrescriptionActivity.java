@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rakib.prescriptionpreservation.adapter.PrescriptionRVAdapter;
 import com.rakib.prescriptionpreservation.db.PrescriptionDB;
 import com.rakib.prescriptionpreservation.entities.Prescription;
 
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AddPrescriptionActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText docName,docNumber,docAddress,hosName;
@@ -67,15 +69,19 @@ public class AddPrescriptionActivity extends AppCompatActivity implements View.O
             String doc = docName.getText().toString();
             String dnum = docNumber.getText().toString();
             String dadd = docAddress.getText().toString();
+            String hosn = hosName.getText().toString();
             String dat = date.getText().toString();
 
-            Prescription prescription = new Prescription(path,doc,dnum,dadd,dat);
+            Prescription prescription = new Prescription(path,doc,dnum,dadd,hosn,dat);
 
             long insertedRow = PrescriptionDB.getInstance(this).getPrescriptionDao().insertPrescription(prescription);
 
             if (insertedRow>0){
                 Toast.makeText(this, "Prescription saved", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this,DashboardActivity.class));
+                List<Prescription> prescriptions = PrescriptionDB.getInstance(this).getPrescriptionDao().getAllPrescription();
+                PrescriptionRVAdapter rvAdapter = new PrescriptionRVAdapter(this,prescriptions);
+                rvAdapter.updateList(prescriptions);
+                startActivity(new Intent(this,ViewPrescriptionActivity.class));
                 finish();
             }
         }
@@ -118,7 +124,7 @@ public class AddPrescriptionActivity extends AppCompatActivity implements View.O
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.rakib.contact",
+                        "com.rakib.prescriptionpreservation",
                         photoFile);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(cameraIntent, REQUEST_CAMERA_CODE);

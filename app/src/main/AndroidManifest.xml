@@ -14,7 +14,9 @@
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewPrescriptionActivity"></activity>
+        <activity android:name=".PrescriptionDetailsActivity"></activity>
+        <activity android:name=".ViewPrescriptionActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.rakib.prescriptionpreservation"
@@ -24,6 +26,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity android:name=".AddPrescriptionActivity" />
         <activity android:name=".DashboardActivity" />
         <activity android:name=".MainActivity">

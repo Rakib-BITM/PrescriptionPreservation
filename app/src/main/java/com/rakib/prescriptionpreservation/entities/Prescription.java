@@ -26,15 +26,6 @@ public class Prescription implements Serializable {
     }
 
     @Ignore
-    public Prescription(String doctorName, String docNumber, String docAddress, String hospitalName, String date) {
-        this.doctorName = doctorName;
-        this.docNumber = docNumber;
-        this.docAddress = docAddress;
-        this.hospitalName = hospitalName;
-        this.date = date;
-    }
-
-    @Ignore
     public Prescription(long id, String image, String doctorName, String docNumber, String docAddress, String hospitalName, String date) {
         this.id = id;
         this.image = image;
