@@ -3,6 +3,8 @@ package com.rakib.prescriptionpreservation.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +50,10 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
         holder.date.setText(prescriptionList.get(position).getDate());
 
         //set Prescription photo
-
+        if (prescriptionList.get(position).getImage() != null){
+            Bitmap bitmap = BitmapFactory.decodeFile(prescriptionList.get(position).getImage());
+            holder.photo.setImageBitmap(bitmap);
+        }
         // Prescription details
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

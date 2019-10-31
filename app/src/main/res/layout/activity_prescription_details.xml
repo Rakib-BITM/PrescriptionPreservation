@@ -26,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="266dp"
         android:src="@drawable/prescription"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:clickable="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -125,7 +126,7 @@
         android:padding="5dp">
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
@@ -155,7 +156,7 @@
         android:padding="5dp">
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"

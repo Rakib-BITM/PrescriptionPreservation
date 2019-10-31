@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/presPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:scaleType="fitCenter" />
+
+    <Button
+        android:id="@+id/okBtn"
+        android:layout_width="match_parent"
+        android:layout_height="71dp"
+        android:text="Ok"
+        android:textSize="30sp"
+        android:textAllCaps="false"
+        android:textColor="#000"
+        android:textStyle="bold" />
+
+</LinearLayout>
