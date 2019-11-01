@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PrescriptionDetailsActivity"></activity>
+        <activity android:name=".PrescriptionUpdateActivity"></activity>
+        <activity android:name=".PrescriptionDetailsActivity" />
         <activity android:name=".ViewPrescriptionActivity" />
 
         <provider

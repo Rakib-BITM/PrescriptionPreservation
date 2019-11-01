@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.rakib.prescriptionpreservation.adapter.PrescriptionRVAdapter;
 import com.rakib.prescriptionpreservation.db.PrescriptionDB;
 import com.rakib.prescriptionpreservation.entities.Prescription;
+import com.rakib.prescriptionpreservation.joinentity.PrescriptionWithDoctor;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ViewPrescriptionActivity extends AppCompatActivity {
 
         prescriptionRV = findViewById(R.id.prescriptionRV);
 
-        List<Prescription> prescriptions = PrescriptionDB.getInstance(this).getPrescriptionDao().getAllPrescription();
+        List<PrescriptionWithDoctor> prescriptions = PrescriptionDB.getInstance(this).getPrescriptionDao().getAllPrescriptionWithDoctor();
 
         rvAdapter = new PrescriptionRVAdapter(this,prescriptions);
 

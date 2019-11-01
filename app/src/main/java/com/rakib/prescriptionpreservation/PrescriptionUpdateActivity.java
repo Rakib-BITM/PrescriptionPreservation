@@ -35,27 +35,46 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class AddPrescriptionActivity extends AppCompatActivity implements View.OnClickListener {
+public class PrescriptionUpdateActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText docName,docNumber,docAddress,hosName;
     private TextView date;
     private ImageView profilePic;
-    private String currentPhotoPath;
+
     private final int REQUEST_STORAGE_CODE = 456;
     private final int REQUEST_CAMERA_CODE = 999;
+    private String currentPhotoPath;
 
-    //date picker
     private DatePickerDialog datePickerDialog;
+
+    private Prescription prescription;
+    private Doctor doctor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_prescription);
+        setContentView(R.layout.activity_prescription_update);
         getSupportActionBar().hide();
         initialization();
-
         date.setOnClickListener(this);
 
+        prescription = (Prescription) getIntent().getSerializableExtra("presUp");
+        long presId = prescription.getId();
+        doctor = PrescriptionDB.getInstance(this).getDoctorDao().getDoctorByID(presId);
+        setValues();
+    }
 
+    private void setValues(){
+        String path = prescription.getImage();
+        if (path !=null){
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            profilePic.setImageBitmap(bitmap);
+        }
+
+        docName.setText(doctor.getDoctorName());
+        docNumber.setText(doctor.getDocNumber());
+        docAddress.setText(doctor.getDocAddress());
+        hosName.setText(prescription.getHospitalName());
+        date.setText(prescription.getDate());
     }
 
     public void showCameraPreview(View view) {
@@ -64,8 +83,7 @@ public class AddPrescriptionActivity extends AppCompatActivity implements View.O
         }
     }
 
-    public void savePrescription(View view) {
-        if (checkEmptyField()){
+    public void updatePrescription(View view) {
             String path = currentPhotoPath;
             String doc = docName.getText().toString();
             String dnum = docNumber.getText().toString();
@@ -75,37 +93,21 @@ public class AddPrescriptionActivity extends AppCompatActivity implements View.O
 
             Prescription prescription = new Prescription(path,hosn,dat);
 
-            long insertedRow = PrescriptionDB.getInstance(this).getPrescriptionDao().insertPrescription(prescription);
+            int insertedRow = PrescriptionDB.getInstance(this).getPrescriptionDao().updatePrescription(prescription);
 
             if (insertedRow>0){
-                Toast.makeText(this, "Prescription saved", Toast.LENGTH_SHORT).show();
-                List<PrescriptionWithDoctor> prescriptions = PrescriptionDB.getInstance(this).getPrescriptionDao().getAllPrescriptionWithDoctor();
-                PrescriptionRVAdapter rvAdapter = new PrescriptionRVAdapter(this,prescriptions);
-                rvAdapter.updateList(prescriptions);
+                Toast.makeText(this, "Prescription Updated", Toast.LENGTH_SHORT).show();
+                doctor.setDoctorName(doc);
+                doctor.setDocNumber(dnum);
+                doctor.setDocAddress(dadd);
+                List<PrescriptionWithDoctor> prescriptionWithDoctorList = PrescriptionDB.getInstance(this).getPrescriptionDao().getAllPrescriptionWithDoctor();
+                PrescriptionRVAdapter rvAdapter = new PrescriptionRVAdapter(this,prescriptionWithDoctorList);
+                rvAdapter.updateList(prescriptionWithDoctorList);
                 startActivity(new Intent(this,ViewPrescriptionActivity.class));
                 finish();
             }
 
-            if (insertedRow>0){
-                Doctor doctor = new Doctor(insertedRow,doc,dnum,dadd);
-
-                long insertedDoctor = PrescriptionDB.getInstance(this).getDoctorDao().insertDoctor(doctor);
-                if (insertedDoctor>0){
-                    Toast.makeText(this, "Prescription saved", Toast.LENGTH_SHORT).show();
-                    List<PrescriptionWithDoctor> prescriptions = PrescriptionDB.getInstance(this).getPrescriptionDao().getAllPrescriptionWithDoctor();
-                    PrescriptionRVAdapter rvAdapter = new PrescriptionRVAdapter(this,prescriptions);
-                    rvAdapter.updateList(prescriptions);
-                    startActivity(new Intent(this,ViewPrescriptionActivity.class));
-                    finish();
-                }else {
-                    Toast.makeText(this, "Failed to save", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -177,12 +179,30 @@ public class AddPrescriptionActivity extends AppCompatActivity implements View.O
 
 
     private void initialization(){
-        docName = findViewById(R.id.docnameIn);
-        docNumber = findViewById(R.id.docnumIn);
-        docAddress = findViewById(R.id.docaddIn);
-        hosName = findViewById(R.id.hosnameIn);
-        date = findViewById(R.id.dateIn);
-        profilePic = findViewById(R.id.photo_in);
+        docName = findViewById(R.id.docnameUp);
+        docNumber = findViewById(R.id.docnumUp);
+        docAddress = findViewById(R.id.docaddUp);
+        hosName = findViewById(R.id.hosnameUp);
+        date = findViewById(R.id.dateUp);
+        profilePic = findViewById(R.id.photo_up);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        datePickerDialog = new DatePickerDialog(this,android.R.style.Theme_Holo_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month+1;
+                String dat = dayOfMonth + "/" + month + "/" + year;
+                date.setText(dat);
+
+            }
+        },year,month,day);
+        datePickerDialog.show();
     }
 
 
@@ -212,26 +232,4 @@ public class AddPrescriptionActivity extends AppCompatActivity implements View.O
         }
         return true;
     }
-
-
-
-    @Override
-    public void onClick(View v) {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        datePickerDialog = new DatePickerDialog(this,android.R.style.Theme_Holo_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month+1;
-                String dat = dayOfMonth + "/" + month + "/" + year;
-                date.setText(dat);
-
-            }
-        },year,month,day);
-        datePickerDialog.show();
-    }
-
-
 }

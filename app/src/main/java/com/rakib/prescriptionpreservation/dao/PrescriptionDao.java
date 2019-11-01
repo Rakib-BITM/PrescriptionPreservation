@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.rakib.prescriptionpreservation.entities.Prescription;
+import com.rakib.prescriptionpreservation.joinentity.PrescriptionWithDoctor;
 
 import java.util.List;
 
@@ -26,4 +27,18 @@ public interface PrescriptionDao {
 
     @Delete
     int deletePrescription(Prescription prescription);
+
+
+    //join queary
+
+    @Query("select * from Prescription " +
+            "inner join Doctor " +
+            "on Doctor.presId = Prescription.id")
+    List<PrescriptionWithDoctor> getAllPrescriptionWithDoctor();
+
+    @Query("select * from Prescription " +
+            "inner join Doctor " +
+            "on Doctor.presId = Prescription.id " +
+            "where Prescription.id like :presID")
+    PrescriptionWithDoctor getPrescriptionWithDoctor(long presID);
 }

@@ -31,148 +31,170 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/background"
-        android:layout_marginBottom="10dp"
+        android:layout_height="54dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/background"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <TextView
             android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:paddingTop="10dp"
             android:text="Doctor Name: "
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/docnameD"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="10dp"
             android:textColor="#000"
-            android:layout_weight="2"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/background"
+        android:layout_height="55dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/background"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_width="9dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:paddingTop="10dp"
             android:text="Mobile: "
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/docnumD"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="10dp"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/docnumD"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:background="@drawable/background"
+            android:onClick="callContact"
+            android:text="Call"
+            android:textAllCaps="false"
             android:textColor="#000"
-            android:layout_weight="2"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/background"
+        android:layout_height="54dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/background"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <TextView
             android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:paddingTop="10dp"
             android:text="Address: "
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/docaddD"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="10dp"
             android:textColor="#000"
-            android:layout_weight="2"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/background"
+        android:layout_height="54dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/background"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <TextView
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:paddingTop="10dp"
             android:text="Hospital Name: "
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/dochospitalD"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="10dp"
             android:textColor="#000"
-            android:layout_weight="2"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/background"
+        android:layout_height="54dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/background"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <TextView
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:paddingTop="10dp"
             android:text="Appointment Date: "
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/appDateD"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="10dp"
             android:textColor="#000"
-            android:layout_weight="2"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

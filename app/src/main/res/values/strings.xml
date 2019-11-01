@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">PrescriptionPreservation</string>
+    <string name="app_name">Prescription</string>
     <string name="dashboard">DashBoard</string>
     <string name="add_prescription">Add Prescription</string>
     <string name="prescription_list">Prescription List</string>
     <string name="prescription_preservation_system">Prescription Preservation System</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
 </resources>

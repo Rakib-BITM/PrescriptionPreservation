@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,17 +19,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rakib.prescriptionpreservation.PrescriptionDetailsActivity;
+import com.rakib.prescriptionpreservation.PrescriptionUpdateActivity;
 import com.rakib.prescriptionpreservation.R;
 import com.rakib.prescriptionpreservation.db.PrescriptionDB;
 import com.rakib.prescriptionpreservation.entities.Prescription;
+import com.rakib.prescriptionpreservation.joinentity.PrescriptionWithDoctor;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAdapter.PrescriptionViewHolder>{
     private Context context;
-    private List<Prescription> prescriptionList;
+    private List<PrescriptionWithDoctor> prescriptionList;
 
-    public PrescriptionRVAdapter(Context context, List<Prescription> prescriptionList) {
+    public PrescriptionRVAdapter(Context context, List<PrescriptionWithDoctor> prescriptionList) {
         this.context = context;
         this.prescriptionList = prescriptionList;
     }
@@ -44,14 +49,14 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
     @Override
     public void onBindViewHolder(@NonNull PrescriptionViewHolder holder, final int position) {
         //step 3
-        holder.docname.setText(prescriptionList.get(position).getDoctorName());
-        holder.docnumber.setText(prescriptionList.get(position).getDocNumber());
-        holder.hosname.setText(prescriptionList.get(position).getHospitalName());
-        holder.date.setText(prescriptionList.get(position).getDate());
+        holder.docname.setText(prescriptionList.get(position).doctor.getDoctorName());
+        holder.docnumber.setText(prescriptionList.get(position).doctor.getDocNumber());
+        holder.hosname.setText(prescriptionList.get(position).prescription.getHospitalName());
+        holder.date.setText(prescriptionList.get(position).prescription.getDate());
 
         //set Prescription photo
-        if (prescriptionList.get(position).getImage() != null){
-            Bitmap bitmap = BitmapFactory.decodeFile(prescriptionList.get(position).getImage());
+        if (prescriptionList.get(position).prescription.getImage() != null){
+            Bitmap bitmap = BitmapFactory.decodeFile(prescriptionList.get(position).prescription.getImage());
             holder.photo.setImageBitmap(bitmap);
         }
         // Prescription details
@@ -59,7 +64,7 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
             @Override
             public void onClick(View v) {
                 //prescription details
-                Prescription p = prescriptionList.get(position);
+                Prescription p = prescriptionList.get(position).prescription;
                 Intent intent = new Intent(context, PrescriptionDetailsActivity.class);
                 intent.putExtra("prescription",p);
                 context.startActivity(intent);
@@ -76,6 +81,34 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
             }
         });
 
+        holder.menuTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.item_edit:
+                                Prescription pu = prescriptionList.get(position).prescription;
+                                Intent intent = new Intent(context, PrescriptionUpdateActivity.class);
+                                intent.putExtra("presUp",pu);
+                                context.startActivity(intent);
+                                break;
+                            case R.id.item_delete:
+                                showPrescriptionDeleteDialog(position);
+                                break;
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
+
+
+
 
 
     }
@@ -88,7 +121,7 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
 
     public class PrescriptionViewHolder extends RecyclerView.ViewHolder {
         ImageView photo;
-        TextView docname,docnumber,hosname,date;
+        TextView docname,docnumber,hosname,date,menuTV;
         public PrescriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             //step 2
@@ -97,10 +130,11 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
             hosname = itemView.findViewById(R.id.row_hosname);
             date = itemView.findViewById(R.id.row_date);
             photo = itemView.findViewById(R.id.row_image);
+            menuTV = itemView.findViewById(R.id.row_menu);
         }
     }
 
-    public void updateList(List<Prescription> prescriptions){
+    public void updateList(List<PrescriptionWithDoctor> prescriptions){
         this.prescriptionList = prescriptions;
         notifyDataSetChanged();
     }
@@ -113,7 +147,7 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Prescription prescription = prescriptionList.get(p);
+                Prescription prescription = prescriptionList.get(p).prescription;
                 deletePrescription(prescription);
             }
         });
@@ -127,7 +161,8 @@ public class PrescriptionRVAdapter extends RecyclerView.Adapter<PrescriptionRVAd
         if (deletedRow > 0){
             Toast.makeText(context, "Prescription deleted", Toast.LENGTH_SHORT).show();
             prescriptionList.remove(prescription);
-            notifyDataSetChanged();
+            List<PrescriptionWithDoctor> prescriptionWithDoctorList = PrescriptionDB.getInstance(context).getPrescriptionDao().getAllPrescriptionWithDoctor();
+            updateList(prescriptionWithDoctorList);
         }
     }
 }
